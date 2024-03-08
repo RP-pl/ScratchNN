@@ -12,7 +12,7 @@ class Model(ABC):
     """
 
     @abstractmethod
-    def compile(self, optimizer:ScratchNN.optimizers.Optimizer, loss, input_shape:[int], metrics=[]):
+    def compile(self, optimizer: ScratchNN.optimizers.Optimizer, loss, input_shape: [int], metrics=[]):
         """
         Compile the model with the given optimizer, loss function, input shape and metrics.
         :param optimizer: Optimizer to use for training the model
@@ -24,7 +24,7 @@ class Model(ABC):
         pass
 
     @abstractmethod
-    def fit(self, X, Y, epochs, batch_size, shuffle=True, validation_data:[np.ndarray]=None) -> None:
+    def fit(self, X, Y, epochs, batch_size, shuffle=True, validation_data: [np.ndarray] = None) -> None:
         """
         Train the model on the given dataset.
         :param X: input data
@@ -37,7 +37,7 @@ class Model(ABC):
         pass
 
     @abstractmethod
-    def predict(self, X:np.ndarray):
+    def predict(self, X: np.ndarray):
         """
         Predict the output for the given input data.
         :param X: input data

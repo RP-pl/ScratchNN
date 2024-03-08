@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
+
 @tf.function
 def cross_entropy(y_true, y_pred):
     """
@@ -14,6 +15,7 @@ def cross_entropy(y_true, y_pred):
     y_pred = tf.clip_by_value(y_pred, 1e-10, 1)
     return -tf.reduce_sum(y_true * tf.math.log(y_pred))
 
+
 @tf.function
 def kl_divergence(y_true, y_pred):
     """
@@ -26,6 +28,7 @@ def kl_divergence(y_true, y_pred):
     y_true = tf.clip_by_value(y_true, 1e-10, 1)
     y_pred = tf.clip_by_value(y_pred, 1e-10, 1)
     return tf.reduce_sum(y_true * tf.math.log(y_true / y_pred))
+
 
 @tf.function
 def hinge(y_true, y_pred):

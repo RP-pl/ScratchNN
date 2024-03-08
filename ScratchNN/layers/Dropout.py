@@ -1,6 +1,7 @@
 from ScratchNN.layers import Layer
 import tensorflow as tf
 
+
 class Dropout(Layer):
     def __init__(self, rate):
         super().__init__()
@@ -9,7 +10,7 @@ class Dropout(Layer):
     @tf.function
     def call(self, input):
         if self.train:
-            dropout_array = tf.random.uniform(input.shape,maxval=1,dtype=tf.float64) > self.rate
+            dropout_array = tf.random.uniform(input.shape, maxval=1, dtype=tf.float64) > self.rate
             return input * tf.cast(dropout_array, input.dtype)
         else:
             return input

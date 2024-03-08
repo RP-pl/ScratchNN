@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 import tensorflow as tf
 
+
 class Layer(ABC):
 
     def __init__(self):
@@ -24,7 +25,6 @@ class Layer(ABC):
     def __call__(self, *args, **kwargs):
         return self.call(*args, **kwargs)
 
-
     @abstractmethod
     def get_weights(self) -> [tf.Variable]:
         raise NotImplementedError
@@ -34,5 +34,5 @@ class Layer(ABC):
     def get_regularization_loss(self) -> tf.Tensor:
         raise NotImplementedError
 
-    def set_train(self, train:bool) -> None:
+    def set_train(self, train: bool) -> None:
         self.train = train

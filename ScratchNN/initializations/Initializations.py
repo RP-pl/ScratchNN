@@ -10,14 +10,18 @@ def glorot(shape):
     weights = np.random.normal(loc=0.0, scale=std_dev, size=(input_units, output_units))
     return weights
 
+
 def zeros(shape):
     return np.zeros(shape)
+
 
 def ones(shape):
     return np.ones(shape)
 
+
 def normal(shape):
     return np.random.normal(size=shape)
+
 
 def he_normal(shape):
     input_units = shape[0]
@@ -25,6 +29,7 @@ def he_normal(shape):
     std_dev = np.sqrt(variance)
     weights = np.random.normal(loc=0.0, scale=std_dev, size=shape)
     return weights
+
 
 def he_uniform(shape):
     input_units = shape[0]

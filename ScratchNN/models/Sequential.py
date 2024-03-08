@@ -8,7 +8,7 @@ from ScratchNN.models.Model import Model
 class Sequential(Model):
     def __init__(self, layers=None):
         self.metrics = []
-        self.layers:[Layer] = layers if layers is not None else []
+        self.layers: [Layer] = layers if layers is not None else []
         self.loss = None
         self.optimizer = None
         self.weights = []
@@ -39,7 +39,7 @@ class Sequential(Model):
         for layer in self.layers:
             layer.set_train(True)
         for epoch in range(epochs):
-            print(f"Epoch {epoch+1}/{epochs}")
+            print(f"Epoch {epoch + 1}/{epochs}")
             if shuffle:
                 indices = tf.range(start=0, limit=tf.shape(X)[0], dtype=tf.int32)
                 indices = tf.random.shuffle(indices)
@@ -47,8 +47,8 @@ class Sequential(Model):
                 Y = tf.gather(Y, indices)
 
             for i in range(0, len(X), batch_size):
-                x_batch = X[i:i+batch_size]
-                y_batch = Y[i:i+batch_size]
+                x_batch = X[i:i + batch_size]
+                y_batch = Y[i:i + batch_size]
                 grads = self._fit_batch(x_batch, y_batch)
                 self.optimizer.apply_gradients(grads, self.weights)
             print(f"Epoch loss: {self.loss(Y, self.predict(X))}")
@@ -62,6 +62,7 @@ class Sequential(Model):
 
         for layer in self.layers:
             layer.set_train(False)
+
     @tf.function
     def _fit_batch(self, x_batch, y_batch):
         with tf.GradientTape() as tape:

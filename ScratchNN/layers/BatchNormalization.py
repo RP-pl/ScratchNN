@@ -5,7 +5,7 @@ import tensorflow as tf
 
 
 class BatchNormalization(Layer):
-    def __init__(self, momentum=0.99, epsilon=1e-3,axis=-1, gamma_regularizer=None, beta_regularizer=None):
+    def __init__(self, momentum=0.99, epsilon=1e-3, axis=-1, gamma_regularizer=None, beta_regularizer=None):
         super().__init__()
         self.gamma_regularizer = gamma_regularizer
         self.beta_regularizer = beta_regularizer
@@ -40,9 +40,9 @@ class BatchNormalization(Layer):
 
         h = (batch - mean) / tf.sqrt(variance + self.epsilon)
         return self.gamma * h + self.beta
+
     def get_output_shape(self, input_shape):
         return input_shape
-
 
     def get_weights(self):
         return [self.gamma, self.beta]

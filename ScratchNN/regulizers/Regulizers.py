@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import tensorflow as tf
+
+
 class Regulizer(ABC):
 
     @abstractmethod
@@ -22,6 +24,7 @@ class L1(Regulizer):
     def call(self, weights):
         return self.alpha * tf.reduce_sum(tf.abs(weights))
 
+
 class L2(Regulizer):
     def __init__(self, alpha=0.01):
         """
@@ -33,6 +36,7 @@ class L2(Regulizer):
     @tf.function
     def call(self, weights):
         return self.alpha * tf.reduce_sum(tf.square(weights))
+
 
 class L1L2(Regulizer):
     def __init__(self, l1=0.01, l2=0.01, alpha=1, beta=1):
@@ -53,11 +57,13 @@ class L1L2(Regulizer):
     def call(self, weights):
         return self.alpha * self.l1(weights) + self.beta * self.l2(weights)
 
+
 class Orthogonal(Regulizer):
     """
     Regulizer that enforces orthogonality of the weights.
     Input needs to be 2D tensor.
     """
+
     def __init__(self, alpha):
         self.alpha = alpha
 
@@ -65,4 +71,5 @@ class Orthogonal(Regulizer):
     def call(self, weights):
         if len(weights.shape) != 2:
             raise ValueError("Weights must be 2D tensor. Got shape: ", weights.shape)
-        return self.alpha * tf.reduce_sum(tf.matmul(weights, weights, transpose_b=True) - tf.eye(weights.shape[0], dtype=tf.float64))
+        return self.alpha * tf.reduce_sum(
+            tf.matmul(weights, weights, transpose_b=True) - tf.eye(weights.shape[0], dtype=tf.float64))
