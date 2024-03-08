@@ -17,6 +17,8 @@ class L1(Regulizer):
         :param alpha: penalty multiplier
         """
         self.alpha = alpha
+
+    @tf.function
     def call(self, weights):
         return self.alpha * tf.reduce_sum(tf.abs(weights))
 
@@ -27,6 +29,8 @@ class L2(Regulizer):
         :param alpha: penalty multiplier
         """
         self.alpha = alpha
+
+    @tf.function
     def call(self, weights):
         return self.alpha * tf.reduce_sum(tf.square(weights))
 
@@ -45,6 +49,7 @@ class L1L2(Regulizer):
         self.alpha = alpha
         self.beta = beta
 
+    @tf.function
     def call(self, weights):
         return self.alpha * self.l1(weights) + self.beta * self.l2(weights)
 
@@ -55,6 +60,8 @@ class Orthogonal(Regulizer):
     """
     def __init__(self, alpha):
         self.alpha = alpha
+
+    @tf.function
     def call(self, weights):
         if len(weights.shape) != 2:
             raise ValueError("Weights must be 2D tensor. Got shape: ", weights.shape)

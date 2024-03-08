@@ -1,1 +1,1 @@
-from .Initializations import glorot
+from .Initializations import glorot, ones, zeros, normal, he_normal, he_uniform, lecun_normal, lecun_uniform

@@ -70,7 +70,7 @@ class Sequential(Model):
             y_pred = self.predict(x_batch)
             loss = self.loss(y_batch, y_pred)
             for layer in self.layers:
-                loss += layer.get_regularization_loss()
+                loss += tf.cast(layer.get_regularization_loss(), dtype=tf.float64)
         grads = tape.gradient(loss, self.weights)
         return grads
 

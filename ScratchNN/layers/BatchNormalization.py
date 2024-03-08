@@ -27,6 +27,7 @@ class BatchNormalization(Layer):
         self.running_mean = tf.Variable(np.zeros(input_shape[self.axis]), dtype=tf.float64, trainable=False)
         self.running_variance = tf.Variable(np.ones(input_shape[self.axis]), dtype=tf.float64, trainable=False)
 
+    @tf.function
     def call(self, batch):
         if self.train:
             mean = tf.reduce_mean(batch, axis=0)
@@ -46,6 +47,7 @@ class BatchNormalization(Layer):
     def get_weights(self):
         return [self.gamma, self.beta]
 
+    @tf.function
     def get_regularization_loss(self):
         if self.gamma_regularizer is not None and self.beta_regularizer is not None:
             return self.gamma_regularizer(self.gamma) + self.beta_regularizer(self.beta)

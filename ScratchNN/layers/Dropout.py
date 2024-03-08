@@ -6,6 +6,7 @@ class Dropout(Layer):
         super().__init__()
         self.rate = rate
 
+    @tf.function
     def call(self, input):
         if self.train:
             dropout_array = tf.random.uniform(input.shape,maxval=1,dtype=tf.float64) > self.rate

@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 
 def _parse_tensor(y_true, y_pred):
     if not isinstance(y_true, np.ndarray):
@@ -6,6 +7,7 @@ def _parse_tensor(y_true, y_pred):
     if not isinstance(y_pred, np.ndarray):
         y_pred = y_pred.numpy()
     return y_true, y_pred
+
 def accuracy(y_true, y_pred):
     y_true, y_pred = _parse_tensor(y_true, y_pred)
     return np.mean(y_true.argmax(axis=1) == y_pred.argmax(axis=1))

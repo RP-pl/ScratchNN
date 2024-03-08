@@ -7,6 +7,7 @@ class Optimizer(ABC):
     def __init__(self, lr=0.01):
         self.lr = lr
     @abstractmethod
+    @tf.function
     def apply_gradients(self, grads, weights):
         pass
 
@@ -15,7 +16,7 @@ class SGD(Optimizer):
 
     def __init__(self, lr=1e-5):
         super().__init__(lr=lr)
-
+    @tf.function
     def apply_gradients(self, grads, weights):
         for grad, weight in zip(grads, weights):
             weight.assign_sub(self.lr*grad)
@@ -26,6 +27,7 @@ class AdaGrad(Optimizer):
         super().__init__(lr=lr)
         self.s = None
 
+    @tf.function
     def apply_gradients(self, grads, weights):
         if self.s is None:
             self.s = [tf.zeros_like(w) for w in weights]
@@ -43,6 +45,7 @@ class RMSProp(Optimizer):
         self.beta = beta
         self.s = None
 
+    @tf.function
     def apply_gradients(self, grads, weights):
         if self.s is None:
             self.s = [tf.zeros_like(w) for w in weights]
@@ -62,6 +65,7 @@ class Adam(Optimizer):
         self.v = None
         self.t = 0
 
+    @tf.function
     def apply_gradients(self, grads:[tf.Tensor], weights:[tf.Tensor]):
         if self.s is None:
             self.s = [tf.zeros_like(w) for w in weights]

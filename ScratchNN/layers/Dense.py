@@ -23,10 +23,12 @@ class Dense(Layer):
         self.w = tf.Variable(self.initializer((input_shape[-1],self.neurons)), dtype=tf.float64, name="dense_weights")
         self.b = tf.Variable(np.random.rand(self.neurons), dtype=tf.float64, name="dense_biases")
         self.weights = [self.w, self.b]
+    @tf.function
     def call(self, input):
         output = tf.matmul(input, self.w) + self.b
         return self.activation(output)
 
+    @tf.function
     def get_regularization_loss(self):
         if self.kernel_regularizer is not None and self.bias_regularizer is not None:
             return self.kernel_regularizer(self.w) + self.bias_regularizer(self.b)

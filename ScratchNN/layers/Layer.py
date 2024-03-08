@@ -9,6 +9,7 @@ class Layer(ABC):
         self.train = False
 
     @abstractmethod
+    @tf.function
     def call(self, input: np.ndarray) -> tf.Tensor:
         raise NotImplementedError
 
@@ -29,6 +30,7 @@ class Layer(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    @tf.function
     def get_regularization_loss(self) -> tf.Tensor:
         raise NotImplementedError
 
