@@ -6,7 +6,7 @@ class Flatten(Layer):
 
     @tf.function
     def call(self, input: np.ndarray) -> tf.Tensor:
-        return tf.reshape(input, [input.shape[0], -1])
+        return tf.reshape(input, (input.shape[0],-1))
 
     def build(self, input_shape: [int]) -> None:
         pass

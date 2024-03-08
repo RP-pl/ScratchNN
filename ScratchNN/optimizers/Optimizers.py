@@ -15,6 +15,10 @@ class Optimizer(ABC):
 class SGD(Optimizer):
 
     def __init__(self, lr=1e-5):
+        """
+        Stochastic Gradient Descent Optimizer
+        :param lr: Learning Rate
+        """
         super().__init__(lr=lr)
     @tf.function
     def apply_gradients(self, grads, weights):
@@ -24,6 +28,10 @@ class SGD(Optimizer):
 class AdaGrad(Optimizer):
 
     def __init__(self,lr=1e-5):
+        """
+        Adaptive Gradient Optimizer
+        :param lr: Learning Rate
+        """
         super().__init__(lr=lr)
         self.s = None
 
@@ -41,6 +49,11 @@ class AdaGrad(Optimizer):
 class RMSProp(Optimizer):
 
     def __init__(self, lr=1e-5, beta=0.9):
+        """
+        Root Mean Square Propagation Optimizer
+        :param lr: learning rate
+        :param beta: forgetting factor
+        """
         super().__init__(lr=lr)
         self.beta = beta
         self.s = None
@@ -57,7 +70,13 @@ class RMSProp(Optimizer):
         self.s = new_s
 
 class Adam(Optimizer):
-    def __init__(self,beta1=0.9,beta2=0.999,lr=1e-5):
+    def __init__(self,beta1=0.9,beta2=0.999,lr=0.001):
+        """
+        Adam Optimizer
+        :param beta1: forgetting factor for first moment
+        :param beta2: forgetting factor for second moment
+        :param lr: learning rate
+        """
         super().__init__(lr=lr)
         self.beta1 = beta1
         self.beta2 = beta2

@@ -30,6 +30,7 @@ class Dense(Layer):
 
     @tf.function
     def get_regularization_loss(self):
+        #Written this way so that tf.function can work properly
         if self.kernel_regularizer is not None and self.bias_regularizer is not None:
             return self.kernel_regularizer(self.w) + self.bias_regularizer(self.b)
         elif self.kernel_regularizer is not None:

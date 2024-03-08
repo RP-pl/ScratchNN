@@ -51,8 +51,6 @@ class Sequential(Model):
                 y_batch = Y[i:i+batch_size]
                 grads = self._fit_batch(x_batch, y_batch)
                 self.optimizer.apply_gradients(grads, self.weights)
-
-
             print(f"Epoch loss: {self.loss(Y, self.predict(X))}")
             if validation_data is not None:
                 X_val, Y_val = validation_data
