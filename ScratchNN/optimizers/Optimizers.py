@@ -52,3 +52,30 @@ class RMSProp(Optimizer):
             weights.assign_sub(tf.math.divide(self.lr, tf.math.sqrt(s + 1e-5)) * grad)
             new_s.append(s)
         self.s = new_s
+
+class Adam(Optimizer):
+    def __init__(self,beta1=0.9,beta2=0.999,lr=1e-5):
+        super().__init__(lr=lr)
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.s = None
+        self.v = None
+        self.t = 0
+
+    def apply_gradients(self, grads:[tf.Tensor], weights:[tf.Tensor]):
+        if self.s is None:
+            self.s = [tf.zeros_like(w) for w in weights]
+            self.v = [tf.zeros_like(w) for w in weights]
+        new_s = []
+        new_v = []
+        self.t+=1
+        for grad, weights,prev_s,prev_v in zip(grads, weights,self.s,self.v):
+            v = self.beta1*prev_v + (1-self.beta1)*grad
+            s = self.beta2*prev_s + (1-self.beta2)*tf.math.multiply(grad, grad)
+            v_hat = v/(1-self.beta1**self.t)
+            s_hat = s/(1-self.beta2**self.t)
+            weights.assign_sub(self.lr * v_hat / tf.sqrt(s_hat + 1e-5))
+            new_v.append(v)
+            new_s.append(s)
+        self.s = new_s
+        self.v = new_v

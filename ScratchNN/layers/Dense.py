@@ -40,6 +40,3 @@ class Dense(Layer):
 
     def get_weights(self):
         return self.weights
-
-    def set_train(self, train):
-        pass

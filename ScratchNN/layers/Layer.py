@@ -32,6 +32,5 @@ class Layer(ABC):
     def get_regularization_loss(self) -> tf.Tensor:
         raise NotImplementedError
 
-    @abstractmethod
     def set_train(self, train:bool) -> None:
         self.train = train

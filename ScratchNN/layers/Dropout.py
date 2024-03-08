@@ -1,7 +1,5 @@
-from abc import ABC
-
 from ScratchNN.layers import Layer
-
+import tensorflow as tf
 
 class Dropout(Layer):
     def __init__(self, rate):
@@ -9,7 +7,11 @@ class Dropout(Layer):
         self.rate = rate
 
     def call(self, input):
-        raise NotImplementedError
+        if self.train:
+            dropout_array = tf.random.uniform(input.shape,maxval=1,dtype=tf.float64) > self.rate
+            return input * tf.cast(dropout_array, input.dtype)
+        else:
+            return input
 
     def build(self, input_shape):
         pass

@@ -1,1 +1,1 @@
-from .Optimizers import RMSProp, AdaGrad, SGD
+from .Optimizers import RMSProp, AdaGrad, SGD, Optimizer, Adam
