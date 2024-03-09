@@ -6,17 +6,20 @@ from ScratchNN.activations import tanh, linear
 import tensorflow as tf
 
 
-class DenseRNN(Layer):
+class ElmanRNN(Layer):
     """
         Fully connected Elman RNN layer.
+        Uses the following equations:
+        h = recurrent_activation(X @ W + state @ W_state + b)
+        y = activation(h)
     """
 
     def __init__(self, neurons, activation=linear, recurrent_activation=tanh, return_sequences=False,
-                 kernel_initializer=glorot, recurrent_initializer=glorot, kernel_regulizer=None,
-                 recurrent_regulizer=None):
-        super(DenseRNN, self).__init__()
-        self.kernel_regularizer = kernel_regulizer
-        self.recurrent_reguarlizer = recurrent_regulizer
+                 kernel_initializer=glorot, recurrent_initializer=glorot, kernel_regularizer=None,
+                 recurrent_regularizer=None):
+        super(ElmanRNN, self).__init__()
+        self.kernel_regularizer = kernel_regularizer
+        self.recurrent_reguarlizer = recurrent_regularizer
         self.state_weight = None
         self.weights = None
         self.neurons = neurons
@@ -34,27 +37,34 @@ class DenseRNN(Layer):
         :param input: input tensor
         :return: output tensor
         """
-        sequences = []
         X = self._reorganize_input(input)
         X = tf.cast(X, dtype=tf.float64)
+        state = self._do_recurrent_step(X[0], np.zeros((X.shape[1], self.neurons)).astype(np.float64))
+        output = self._do_recurrence(X, state)
+        return output
 
-        Y = tf.matmul(X[0], self.w)
-        Y += self.b
-        state = self.recurrent_activation(Y)
+    @tf.function
+    def _do_recurrent_step(self, input: tf.Tensor, state: tf.Tensor) -> tf.Tensor:
+        """
+            Perform a single recurrent step
+        """
+        Y = self.recurrent_activation(tf.matmul(input, self.w) + tf.matmul(state, self.state_weight) + self.b)
+        return Y
 
-        for i in range(1, X.shape[0]):
-            Y = tf.matmul(X[i], self.w)
-            Y += tf.matmul(state, self.state_weight)
-            Y += self.b
-            Y = self.recurrent_activation(Y)
+    @tf.function
+    def _do_recurrence(self, input: tf.Tensor, state: tf.Tensor) -> tf.Tensor:
+        sequences = []
+        for i in range(1, input.shape[0]): # iterate over time steps
+            Y = self._do_recurrent_step(input[i], state)
             if self.return_sequences:
                 sequences.append(Y)
-            self.state = Y
+            state = Y
         if self.return_sequences:
-            return self._reorganize_input(tf.convert_to_tensor(sequences))
+            return self.activation(self._reorganize_input(tf.convert_to_tensor(sequences)))
         else:
-            return self.state
+            return self.activation(state)
 
+    @tf.function
     def _reorganize_input(self, input: np.ndarray) -> tf.Tensor:
         """
             Reorganize input by timestamp rather than by batch

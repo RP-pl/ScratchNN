@@ -3,4 +3,5 @@ from .Layer import Layer
 from .BatchNormalization import BatchNormalization
 from .Dropout import Dropout
 from .Flatten import Flatten
-from .DenseRNN import DenseRNN
+from .ElmanRNN import ElmanRNN
+from .GRU import GRU
