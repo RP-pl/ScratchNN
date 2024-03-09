@@ -5,3 +5,5 @@ from .Dropout import Dropout
 from .Flatten import Flatten
 from .ElmanRNN import ElmanRNN
 from .GRU import GRU
+from .TimeDistributed import TimeDistributed
+from .LSTM import LSTM
