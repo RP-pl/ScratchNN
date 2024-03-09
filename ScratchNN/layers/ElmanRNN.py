@@ -10,8 +10,9 @@ class ElmanRNN(Layer):
     """
         Fully connected Elman RNN layer.
         Uses the following equations:
-        h = recurrent_activation(X @ W + state @ W_state + b)
-        y = activation(h)
+        .. math::
+            h_{n} = \phi(X @ W + h_{n-1} @ W_h + b) \n
+            y = \psi(h)
     """
 
     def __init__(self, neurons, activation=linear, recurrent_activation=tanh, return_sequences=False,
