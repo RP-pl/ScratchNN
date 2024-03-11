@@ -29,6 +29,7 @@ class Sequential(Model):
             layer.build(input_shape)
             self.weights.extend(layer.get_weights())
             input_shape = layer.get_output_shape(input_shape)
+        #self.optimizer.observe_weights(self.weights)
         if type(metrics) == list:
             self.metrics.extend(metrics)
         elif callable(metrics):
@@ -50,8 +51,7 @@ class Sequential(Model):
             for i in range(0, len(X), batch_size):
                 x_batch = X[i:i + batch_size]
                 y_batch = Y[i:i + batch_size]
-                grads = self._fit_batch(x_batch, y_batch)
-                self.optimizer.apply_gradients(grads, self.weights)
+                self._fit_batch(x_batch, y_batch)
             print(f"Epoch loss: {self.loss(Y, self.predict(X))}")
             if validation_data is not None:
                 X_val, Y_val = validation_data
@@ -71,8 +71,7 @@ class Sequential(Model):
             loss = self.loss(y_batch, y_pred)
             for layer in self.layers:
                 loss += tf.cast(layer.get_regularization_loss(), dtype=tf.float64)
-        grads = tape.gradient(loss, self.weights)
-        return grads
+        self.optimizer.apply_gradients(tape.gradient(loss, self.weights), self.weights)
 
     @tf.function
     def predict(self, X):

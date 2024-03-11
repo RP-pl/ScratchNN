@@ -7,12 +7,12 @@ class Optimizer(ABC):
 
     def __init__(self, lr=0.01):
         self.lr = lr
+        self.tape = tf.GradientTape(persistent=True)
 
     @abstractmethod
     @tf.function
     def apply_gradients(self, grads, weights):
         pass
-
 
 class SGD(Optimizer):
 
@@ -104,6 +104,76 @@ class Adam(Optimizer):
             v_hat = v / (1 - self.beta1 ** self.t)
             s_hat = s / (1 - self.beta2 ** self.t)
             weights.assign_sub(self.lr * v_hat / tf.sqrt(s_hat + 1e-5))
+            new_v.append(v)
+            new_s.append(s)
+        self.s = new_s
+        self.v = new_v
+
+
+class AdaMax(Optimizer):
+    def __init__(self, beta1=0.9, beta2=0.999, lr=0.001):
+        """
+        AdaMax Optimizer
+        :param beta1: forgetting factor for first moment
+        :param beta2: forgetting factor for second moment
+        :param lr: learning rate
+        """
+        super().__init__(lr=lr)
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.s = None
+        self.v = None
+        self.t = 0
+
+    @tf.function
+    def apply_gradients(self, grads: [tf.Tensor], weights: [tf.Tensor]):
+        if self.s is None:
+            self.s = [tf.zeros_like(w) for w in weights]
+            self.v = [tf.zeros_like(w) for w in weights]
+        new_s = []
+        new_v = []
+        self.t += 1
+        for grad, weights, prev_s, prev_v in zip(grads, weights, self.s, self.v):
+            v = self.beta1 * prev_v + (1 - self.beta1) * grad
+            s = tf.math.maximum(self.beta2 * prev_s, tf.abs(grad))
+            v_hat = v / (1 - self.beta1 ** self.t)
+            s_hat = s / (1 - self.beta2 ** self.t)
+            weights.assign_sub(self.lr * v_hat / tf.sqrt(s_hat + 1e-5))
+            new_v.append(v)
+            new_s.append(s)
+        self.s = new_s
+        self.v = new_v
+
+
+class Nadam(Optimizer):
+    def __init__(self, beta1=0.9, beta2=0.999, lr=0.001):
+        """
+        Nadam Optimizer
+        :param beta1: forgetting factor for first moment
+        :param beta2: forgetting factor for second moment
+        :param lr: learning rate
+        """
+        super().__init__(lr=lr)
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.s = None
+        self.v = None
+        self.t = 0
+    @tf.function
+    def apply_gradients(self, grads, weights):
+        if self.s is None:
+            self.s = [tf.zeros_like(w) for w in weights]
+            self.v = [tf.zeros_like(w) for w in weights]
+        new_s = []
+        new_v = []
+        self.t += 1
+        for grad, weights, prev_s, prev_v in zip(grads, weights, self.s, self.v):
+            v = self.beta1 * prev_v + (1 - self.beta1) * grad
+            s = self.beta2 * prev_s + (1 - self.beta2) * tf.math.multiply(grad, grad)
+            v_hat = v / (1 - self.beta1 ** self.t)
+            s_hat = s / (1 - self.beta2 ** self.t)
+            v_bar = self.beta1 *  v_hat + (1-self.beta1) * grad
+            weights.assign_sub(self.lr * v_bar / tf.sqrt(s_hat + 1e-5))
             new_v.append(v)
             new_s.append(s)
         self.s = new_s
