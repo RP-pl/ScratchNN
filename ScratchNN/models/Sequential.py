@@ -1,3 +1,4 @@
+import pickle
 from builtins import callable
 import tensorflow as tf
 
@@ -79,3 +80,12 @@ class Sequential(Model):
         for layer in self.layers[1:]:
             Y_pred = layer(Y_pred)
         return Y_pred
+
+    def save(self, path):
+        with open(path, 'wb') as f:
+            pickle.dump(self, f)
+
+    @staticmethod
+    def load(path:str) -> Model:
+        with open(path, 'rb') as f:
+            return pickle.load(f)

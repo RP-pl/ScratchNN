@@ -44,3 +44,21 @@ class Model(ABC):
         :return: predicted values
         """
         pass
+
+    @abstractmethod
+    def save(self, filename: str) -> None:
+        """
+        Save the model to a file.
+        :param filename: name of the file to save the model
+        """
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def load(filename: str) -> 'Model':
+        """
+        Load the model from a file.
+        :param filename: name of the file to load the model
+        :return: loaded model
+        """
+        pass

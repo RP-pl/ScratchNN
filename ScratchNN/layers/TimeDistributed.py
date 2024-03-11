@@ -5,6 +5,10 @@ from ScratchNN.layers import Layer
 
 
 class TimeDistributed(Layer):
+    """
+        Time distributed layer.
+        This layer applies a layer to each time step of the input tensor.
+    """
 
     def __init__(self, layer: Layer):
         super().__init__()
