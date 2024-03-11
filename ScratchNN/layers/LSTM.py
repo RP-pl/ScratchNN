@@ -86,18 +86,18 @@ class LSTM(Layer):
         self.R_z = tf.Variable(self.recurrent_initializer((n_neurons, n_neurons)), dtype=tf.float64,name="recurrent_weights_Z")
         self.R_r = tf.Variable(self.recurrent_initializer((n_neurons, n_neurons)), dtype=tf.float64, name="recurrent_weights_R")
         self.R_h = tf.Variable(self.recurrent_initializer((n_neurons, n_neurons)), dtype=tf.float64,name="recurrent_weights_H")
-        self.R_o = tf.Variable(self.recurrent_initializer((n_neurons, n_inputs)), dtype=tf.float64, name="recurrent_weights_O")
+        self.R_o = tf.Variable(self.recurrent_initializer((n_neurons, n_neurons)), dtype=tf.float64, name="recurrent_weights_O")
         self.B_z = tf.Variable(np.random.rand(n_neurons), dtype=tf.float64, name="bias_Z")
         self.B_r = tf.Variable(np.random.rand(n_neurons), dtype=tf.float64, name="bias_R")
         self.B_h = tf.Variable(np.random.rand(n_neurons), dtype=tf.float64, name="bias_H")
-        self.B_o = tf.Variable(np.random.rand(n_inputs), dtype=tf.float64, name="bias_O")
+        self.B_o = tf.Variable(np.random.rand(n_neurons), dtype=tf.float64, name="bias_O")
         self.weights = [self.W_z, self.W_r, self.W_h, self.R_z, self.R_r, self.R_h, self.B_z, self.B_r, self.B_h, self.W_o, self.R_o, self.B_o]
 
     def get_output_shape(self, input_shape: [int]) -> [int]:
         if not self.return_sequences:
             return input_shape[:1] + [self.neurons]
         else:
-            return input_shape[:2][::-1] + [self.neurons]
+            return input_shape[:2] + [self.neurons]
 
     def get_weights(self) -> [tf.Variable]:
         return self.weights

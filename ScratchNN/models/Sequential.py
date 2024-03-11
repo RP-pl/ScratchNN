@@ -29,7 +29,6 @@ class Sequential(Model):
             layer.build(input_shape)
             self.weights.extend(layer.get_weights())
             input_shape = layer.get_output_shape(input_shape)
-        #self.optimizer.observe_weights(self.weights)
         if type(metrics) == list:
             self.metrics.extend(metrics)
         elif callable(metrics):

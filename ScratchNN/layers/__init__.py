@@ -7,3 +7,4 @@ from .ElmanRNN import ElmanRNN
 from .GRU import GRU
 from .TimeDistributed import TimeDistributed
 from .LSTM import LSTM
+from .Bidirectional import Bidirectional
