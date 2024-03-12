@@ -3,12 +3,11 @@ import numpy as np
 from ScratchNN.activations import linear
 from ScratchNN.initializations import glorot
 from ScratchNN.layers import Layer
-from ScratchNN.util import valid
 
 import tensorflow as tf
 
 class Conv1D(Layer):
-    def __init__(self,filters,kernel_size,strides=1,padding=valid,activation=linear,initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
+    def __init__(self,filters,kernel_size,strides=1,activation=linear,initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
         super(Conv1D,self).__init__()
         self.bias = None
         self.kernels = None
