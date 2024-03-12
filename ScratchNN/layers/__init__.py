@@ -8,3 +8,4 @@ from .GRU import GRU
 from .TimeDistributed import TimeDistributed
 from .LSTM import LSTM
 from .Bidirectional import Bidirectional
+from .Conv1D import Conv1D
