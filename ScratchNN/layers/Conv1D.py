@@ -14,25 +14,20 @@ class Conv1D(Layer):
         self.filters = filters
         self.kernel_size = kernel_size
         self.strides = strides
-        self.padding = padding
         self.activation = activation
         self.initializer = initializer
         self.kernel_regularizer = kernel_regularizer
         self.bias_regularizer = bias_regularizer
     def build(self,input_shape):
-        self.kernels = tf.Variable(tf.random.normal([self.kernel_size,input_shape[-1],self.filters], dtype=tf.float64))
-
+        self.kernels = tf.Variable(self.initializer([self.kernel_size,input_shape[-1],self.filters]),dtype=tf.float64)
+        self.bias = tf.Variable(tf.random.normal([self.filters], dtype=tf.float64))
+    @tf.function
     def call(self,inputs):
-        output = self.conv(inputs)
-        return output
-
-
-    def conv(self,inputs):
-        output = tf.nn.convolution(inputs,self.kernels, strides=self.strides, padding='VALID',data_format="NWC",dilations=[1])
-        return output
+        output = tf.nn.convolution(inputs, self.kernels, strides=self.strides, padding='VALID')
+        return self.activation(output) + self.bias
 
     def get_weights(self) -> [tf.Variable]:
-        return [self.kernels]
+        return [self.kernels,self.bias]
 
     def get_output_shape(self, input_shape: [int]) -> [int]:
         return [input_shape[0],(input_shape[1]-self.kernel_size)//self.strides+1,self.filters]
