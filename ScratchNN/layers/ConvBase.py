@@ -1,20 +1,25 @@
-import numpy as np
-
 from ScratchNN.activations import linear
 from ScratchNN.initializations import glorot
 from ScratchNN.layers import Layer
-
 import tensorflow as tf
 
-from ScratchNN.layers.ConvBase import ConvBase
 
-
-class Conv1D(ConvBase):
-    def __init__(self,filters,kernel_size,strides=1,activation=linear,initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
-        super(Conv1D,self).__init__(filters, [kernel_size], [strides], activation, initializer, kernel_regularizer, bias_regularizer)
-    """
+class ConvBase(Layer):
+    def __init__(self, filters, kernel_size, strides=None, activation=linear, initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
+        super(ConvBase,self).__init__()
+        self.strides = strides
+        self.bias = None
+        self.kernels = None
+        self.filters = filters
+        self.kernel_size = kernel_size
+        self.strides = strides
+        self.activation = activation
+        self.initializer = initializer
+        self.kernel_regularizer = kernel_regularizer
+        self.bias_regularizer = bias_regularizer
     def build(self,input_shape):
-        self.kernels = tf.Variable(self.initializer([self.kernel_size,input_shape[-1],self.filters]),dtype=tf.float64)
+        values = tf.cast(self.initializer([*self.kernel_size,input_shape[-1],self.filters]),dtype=tf.float64)
+        self.kernels = tf.Variable(values,dtype=tf.float64)
         self.bias = tf.Variable(self.initializer([self.filters]),dtype=tf.float64)
     @tf.function
     def call(self,inputs):
@@ -25,7 +30,11 @@ class Conv1D(ConvBase):
         return [self.kernels,self.bias]
 
     def get_output_shape(self, input_shape: [int]) -> [int]:
-        return [input_shape[0],(input_shape[1]-self.kernel_size)//self.strides+1,self.filters]
+        output = [input_shape[0]]
+        for i in range(len(input_shape)-2):
+            output.append((input_shape[i+1]-self.kernel_size[i])//self.strides[i]+1)
+        output.append(self.filters)
+        return output
     def get_regularization_loss(self) -> tf.Tensor:
         if self.kernel_regularizer is not None and self.bias_regularizer is not None:
             return self.kernel_regularizer(self.kernels) + self.bias_regularizer(self.bias)
@@ -35,4 +44,3 @@ class Conv1D(ConvBase):
             return self.bias_regularizer(self.bias)
         else:
             return 0
-    """

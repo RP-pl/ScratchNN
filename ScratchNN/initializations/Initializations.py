@@ -4,7 +4,7 @@ import tensorflow as tf
 
 def glorot(shape):
     input_units = shape[0]
-    output_units = shape[1]
+    output_units = np.prod(shape[1:])
     variance = 2 / (input_units + output_units)
     std_dev = np.sqrt(variance)
     weights = np.random.normal(loc=0.0, scale=std_dev, size=shape)
