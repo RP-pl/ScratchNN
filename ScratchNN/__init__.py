@@ -1,7 +1,8 @@
-import layers
-import models
-import optimizers
-import losses
-import activations
-import initializations
-import regularizers
+import ScratchNN.layers
+import ScratchNN.models
+import ScratchNN.optimizers
+import ScratchNN.losses
+import ScratchNN.activations
+import ScratchNN.initializations
+import ScratchNN.regularizers
+import ScratchNN.metrics
