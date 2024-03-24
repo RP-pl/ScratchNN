@@ -5,6 +5,9 @@ import tensorflow as tf
 
 
 class ConvBase(Layer):
+    """
+        Base for all convolutional layers.
+    """
     def __init__(self, filters, kernel_size, strides=None, activation=linear, initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
         super(ConvBase,self).__init__()
         self.strides = strides

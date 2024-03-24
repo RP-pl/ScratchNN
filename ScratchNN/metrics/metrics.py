@@ -11,11 +11,23 @@ def _parse_tensor(y_true, y_pred):
 
 
 def accuracy(y_true, y_pred):
+    """
+    Compute the accuracy score.
+    :param y_true: true values
+    :param y_pred: predicted values
+    :return: accuracy score between predicted and true values
+    """
     y_true, y_pred = _parse_tensor(y_true, y_pred)
     return np.mean(y_true.argmax(axis=1) == y_pred.argmax(axis=1))
 
 
 def precision(y_true, y_pred):
+    """
+    Compute the precision score.
+    :param y_true: true values
+    :param y_pred: predicted values
+    :return: overall precision score between predicted and true values
+    """
     y_true, y_pred = _parse_tensor(y_true, y_pred)
     true_positives = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)), axis=0)
     false_positives = np.sum(np.round(np.clip(y_pred - y_true, 0, 1)), axis=0)
@@ -23,6 +35,12 @@ def precision(y_true, y_pred):
 
 
 def recall(y_true, y_pred):
+    """
+    Compute the recall score.
+    :param y_true: true values
+    :param y_pred: predicted values
+    :return: overall recall score between predicted and true values
+    """
     y_true, y_pred = _parse_tensor(y_true, y_pred)
     true_positives = np.sum(np.round(np.clip(y_true * y_pred, 0, 1)), axis=0)
     false_negatives = np.sum(np.round(np.clip(y_true - y_pred, 0, 1)), axis=0)
@@ -30,6 +48,12 @@ def recall(y_true, y_pred):
 
 
 def f1(y_true, y_pred):
+    """
+    Compute the F1 score.
+    :param y_true: true values
+    :param y_pred: predicted values
+    :return: f1 score between predicted and true values
+    """
     y_true, y_pred = _parse_tensor(y_true, y_pred)
     p = precision(y_true, y_pred)
     r = recall(y_true, y_pred)
@@ -37,6 +61,12 @@ def f1(y_true, y_pred):
 
 
 def mape(y_true, y_pred):
+    """
+    Compute the Mean Absolute Percentage Error (MAPE).
+    :param y_true: true values
+    :param y_pred: predicted values
+    :return: mape score between predicted and true values
+    """
     y_true, y_pred = _parse_tensor(y_true, y_pred)
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 

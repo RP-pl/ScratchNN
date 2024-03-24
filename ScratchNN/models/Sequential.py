@@ -7,6 +7,9 @@ from ScratchNN.models.Model import Model
 
 
 class Sequential(Model):
+    """
+    Sequential model that stacks layers on top of each other.
+    """
     def __init__(self, layers=None):
         self.metrics = []
         self.layers: [Layer] = layers if layers is not None else []

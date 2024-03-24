@@ -5,6 +5,10 @@ import tensorflow as tf
 
 
 class BatchNormalization(Layer):
+    """
+    Layer, that performs batch normalization on the input.
+    The layer has learnable parameters gamma and beta, which are used to scale and shift the normalized input.
+    """
     def __init__(self, momentum=0.99, epsilon=1e-3, axis=-1, gamma_regularizer=None, beta_regularizer=None):
         super().__init__()
         self.gamma_regularizer = gamma_regularizer

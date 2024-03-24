@@ -4,6 +4,10 @@ import tensorflow as tf
 
 
 class Optimizer(ABC):
+    """
+    Abstract class for optimizers.
+    Optimizers are used to update the weights of a model to minimize the loss function.
+    """
 
     def __init__(self, lr=0.01):
         self.lr = lr
@@ -12,6 +16,12 @@ class Optimizer(ABC):
     @abstractmethod
     @tf.function
     def apply_gradients(self, grads, weights):
+        """
+        Apply the gradients to the weights
+        :param grads: gradients computed by the loss function
+        :param weights: weights of the model
+        :return: None
+        """
         pass
 
 class SGD(Optimizer):

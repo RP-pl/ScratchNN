@@ -5,20 +5,23 @@ from typing_extensions import deprecated
 from ScratchNN.activations import linear
 from ScratchNN.initializations import glorot
 from ScratchNN.layers import Layer
-from ScratchNN.util import valid
 import tensorflow as tf
 
 
 @deprecated("Use Conv1D instead. This class is terribly slow")
 class _Conv1D(Layer):
-    def __init__(self,filters,kernel_size,strides=1,padding=valid,activation=linear,initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
+    """
+        1D Convolution Layer
+        This layer is terribly slow and should not be used. Use Conv1D instead
+        This was only made as a proof of concept to show that it is possible to create a convolution layer from scratch.
+    """
+    def __init__(self,filters,kernel_size,strides=1,activation=linear,initializer=glorot, kernel_regularizer=None, bias_regularizer=None):
         super(_Conv1D,self).__init__()
         self.bias = None
         self.kernels = None
         self.filters = filters
         self.kernel_size = kernel_size
         self.strides = strides
-        self.padding = padding
         self.activation = activation
         self.initializer = initializer
         self.kernel_regularizer = kernel_regularizer

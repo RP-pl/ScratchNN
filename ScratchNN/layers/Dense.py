@@ -7,7 +7,9 @@ from ScratchNN.initializations.Initializations import glorot
 
 
 class Dense(Layer):
-
+    """
+        Dense layer.
+    """
     def __init__(self, neurons, activation=ScratchNN.activations.linear, initializer=glorot, kernel_regularizer=None,
                  bias_regularizer=None):
         super().__init__()

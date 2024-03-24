@@ -3,6 +3,10 @@ import tensorflow as tf
 
 
 class Regulizer(ABC):
+    """
+    Abstract class for regularizers.
+    Regularizers are used to add penalties to the loss function to prevent overfitting.
+    """
 
     @abstractmethod
     def call(self, weights):

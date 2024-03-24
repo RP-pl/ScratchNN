@@ -3,6 +3,9 @@ import tensorflow as tf
 
 
 class Dropout(Layer):
+    """
+        Dropout layer.
+    """
     def __init__(self, rate):
         super().__init__()
         self.rate = rate
